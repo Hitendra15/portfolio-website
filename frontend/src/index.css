@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Manrope", sans-serif;
+}
+
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #0f172a;
+  background: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+a { text-decoration: none; }
+button, input, textarea { font: inherit; }
+::selection { background: #dbeafe; color: #1e3a8a; }
+
+.container-shell { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+.section-pad { padding-block: 100px; }
+.hero-grid {
+  background-image: radial-gradient(circle at 78% 24%, rgba(219,234,254,.62), transparent 28%), linear-gradient(180deg,#fff 0%,#fbfdff 100%);
+}
+.button-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 1px solid #0f172a; border-radius: 12px; background: #0f172a;
+  padding: 13px 19px; color: #fff; font-size: 13px; font-weight: 800;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.button-primary:hover { transform: translateY(-2px); background: #1d4ed8; border-color: #1d4ed8; box-shadow: 0 12px 24px -12px rgba(29,78,216,.55); }
+.button-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border: 1px solid #e2e8f0; border-radius: 12px; background: #fff;
+  padding: 13px 19px; color: #334155; font-size: 13px; font-weight: 800;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.button-secondary:hover { transform: translateY(-2px); border-color: #93c5fd; color: #1d4ed8; }
+.link-arrow { display: inline-flex; align-items: center; gap: 8px; color: #1d4ed8; font-size: 13px; font-weight: 800; }
+.service-card {
+  border: 1px solid #e8edf4; border-radius: 18px; background: #fff;
+  padding: 25px 22px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.service-card:hover { transform: translateY(-5px); border-color: #bfdbfe; box-shadow: 0 22px 48px -34px rgba(15,23,42,.35); }
+.project-card {
+  border: 1px solid #e5eaf1; border-radius: 20px; background: #fff; padding: 18px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 22px 48px -34px rgba(15,23,42,.3); }
+.form-label { display: grid; gap: 8px; color: #334155; font-size: 12px; font-weight: 800; }
+.form-input {
+  width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff;
+  padding: 12px 13px; color: #0f172a; font-size: 13px; outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.form-input::placeholder { color: #94a3b8; font-weight: 400; }
+.form-input:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,.16); }
+.pulse-dot { box-shadow: 0 0 0 4px rgba(16,185,129,.12); }
+
+@media (max-width: 767px) {
+  .container-shell { width: min(100% - 36px, 600px); }
+  .section-pad { padding-block: 72px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+/* Phase 2: shared inner-page layout and responsive refinements */
+.page-intro { padding-block: 92px 84px; background: radial-gradient(circle at 82% 18%, rgba(219,234,254,.72), transparent 27%), linear-gradient(180deg,#f8fbff 0%,#fff 100%); border-bottom: 1px solid #eef2f7; }
+.about-profile-card { align-self: start; border: 1px solid #e2e8f0; border-radius: 24px; background: #fff; padding: 30px; box-shadow: 0 24px 60px -48px rgba(15,23,42,.35); }
+.profile-monogram { display: grid; width: 100%; aspect-ratio: 1.5; place-items: center; border-radius: 18px; background: radial-gradient(circle at 70% 20%,#dbeafe,transparent 45%),#f1f5f9; color: #1d4ed8; font: 800 76px/1 "Manrope",sans-serif; letter-spacing: -.08em; }
+.skill-card { border: 1px solid #e2e8f0; border-radius: 18px; background: white; padding: 24px; }
+.skill-chip { display: inline-flex; align-items: center; border: 1px solid #e2e8f0; border-radius: 7px; background: #f8fafc; padding: 6px 9px; color: #475569; font-size: 10px; font-weight: 800; }
+.project-detail-card { overflow: hidden; border: 1px solid #e2e8f0; border-radius: 22px; background: #fff; transition: transform .2s ease, box-shadow .2s ease; }
+.project-detail-card:hover { transform: translateY(-4px); box-shadow: 0 24px 54px -40px rgba(15,23,42,.35); }
+.project-art { display: flex; min-height: 190px; align-items: center; justify-content: space-between; padding: 28px; }
+.project-art span { font: 800 76px/1 "Manrope",sans-serif; letter-spacing: -.1em; opacity: .72; }
+.project-art p { max-width: 140px; text-align: right; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.project-blue { background: linear-gradient(135deg,#dbeafe,#eff6ff); color: #1d4ed8; }
+.project-violet { background: linear-gradient(135deg,#ede9fe,#f5f3ff); color: #6d28d9; }
+.project-green { background: linear-gradient(135deg,#d1fae5,#ecfdf5); color: #047857; }
+.button-light { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid rgba(255,255,255,.25); border-radius: 12px; padding: 13px 18px; color: white; font-size: 13px; font-weight: 800; transition: background .2s ease; }
+.button-light:hover { background: rgba(255,255,255,.12); }
+.timeline { position: relative; display: grid; gap: 28px; }
+.timeline::before { position: absolute; top: 20px; bottom: 24px; left: 19px; width: 1px; background: #dbeafe; content: ""; }
+.timeline-item { position: relative; padding-left: 54px; }
+.timeline-marker { position: absolute; top: 15px; left: 0; z-index: 1; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #bfdbfe; border-radius: 12px; background: #eff6ff; color: #1d4ed8; }
+@media (max-width: 767px) {
+  .page-intro { padding-block: 68px 60px; }
+  .profile-monogram { aspect-ratio: 1.8; font-size: 58px; }
+  .project-art { min-height: 150px; }
+  .project-art span { font-size: 58px; }
+}

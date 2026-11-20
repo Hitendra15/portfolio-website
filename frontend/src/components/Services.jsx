@@ -1,10 +1,14 @@
 import { ArrowUpRight, Braces, LayoutDashboard, Server, Workflow } from 'lucide-react'
 import { siteData } from '../data/siteData'
+import { useApiData } from '../hooks/useApiData'
+import { fetchServices } from '../services/portfolioApi'
 import SectionHeading from './SectionHeading'
 
 const icons = { server: Server, braces: Braces, layout: LayoutDashboard, workflow: Workflow }
 
 export default function Services() {
+  const { data: services } = useApiData(fetchServices, siteData.services, 'services')
+
   return (
     <section id="services" className="section-pad">
       <div className="container-shell">
@@ -13,8 +17,8 @@ export default function Services() {
           <a href="#contact" className="link-arrow mb-1 shrink-0">Discuss your requirements <ArrowUpRight size={16} /></a>
         </div>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {siteData.services.map((service) => {
-            const Icon = icons[service.icon]
+          {services.map((service) => {
+            const Icon = icons[service.icon] || Server
             return (
               <article key={service.number} className="service-card group">
                 <div className="flex items-start justify-between">

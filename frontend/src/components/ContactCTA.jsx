@@ -1,19 +1,44 @@
 import { useState } from 'react'
 import { ArrowUpRight, Mail, MessageCircle } from 'lucide-react'
 import { siteData } from '../data/siteData'
+import { sendContactMessage } from '../services/portfolioApi'
+
+const emptyForm = { name: '', email: '', subject: '', message: '' }
+
+function FieldError({ message }) {
+  return message ? <span className="text-[11px] font-semibold text-red-600">{message}</span> : null
+}
 
 export default function ContactCTA() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [notice, setNotice] = useState('')
+  const [form, setForm] = useState(emptyForm)
+  const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [feedback, setFeedback] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
 
-  const update = (event) => setForm({ ...form, [event.target.name]: event.target.value })
+  const update = (event) => {
+    const { name, value } = event.target
+    setForm((current) => ({ ...current, [name]: value }))
+    setFieldErrors((current) => ({ ...current, [name]: undefined }))
+  }
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault()
-    const subject = encodeURIComponent(`Website inquiry from ${form.name}`)
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)
-    window.location.href = `mailto:${siteData.email}?subject=${subject}&body=${body}`
-    setNotice('Your email application should open with the inquiry details. This form currently prepares an email in your default email application.')
+    if (status === 'sending') return
+
+    setStatus('sending')
+    setFeedback('')
+    setFieldErrors({})
+
+    try {
+      await sendContactMessage(form)
+      setForm(emptyForm)
+      setStatus('success')
+      setFeedback("Thank you! Your message has been sent and I'll get back to you soon.")
+    } catch (error) {
+      setStatus('error')
+      setFieldErrors(error.fieldErrors || {})
+      setFeedback(`${error.message} You can also email me at ${siteData.email}.`)
+    }
   }
 
   const whatsappNumber = siteData.phone.replace(/\D/g, '')
@@ -37,11 +62,12 @@ export default function ContactCTA() {
               <h3 className="font-display text-xl font-extrabold">Send an inquiry</h3>
               <p className="mt-1 text-xs text-slate-500">Share a few details and I'll know how to follow up.</p>
               <div className="mt-6 grid gap-4">
-                <label className="form-label">Your name<input required name="name" value={form.name} onChange={update} placeholder="Jane Smith" className="form-input" /></label>
-                <label className="form-label">Email address<input required type="email" name="email" value={form.email} onChange={update} placeholder="jane@company.com" className="form-input" /></label>
-                <label className="form-label">Project details<textarea required minLength={10} rows="4" name="message" value={form.message} onChange={update} placeholder="Tell me about your project, goals and timeline..." className="form-input resize-y" /></label>
-                <button className="button-primary w-full" type="submit">Prepare inquiry <ArrowUpRight size={16} /></button>
-                {notice && <p role="status" className="text-xs leading-5 text-blue-700">{notice}</p>}
+                <label className="form-label">Your name<input required minLength={2} maxLength={100} name="name" value={form.name} onChange={update} placeholder="Jane Smith" className="form-input" /><FieldError message={fieldErrors.name} /></label>
+                <label className="form-label">Email address<input required type="email" maxLength={254} name="email" value={form.email} onChange={update} placeholder="jane@company.com" className="form-input" /><FieldError message={fieldErrors.email} /></label>
+                <label className="form-label">Subject<input required minLength={3} maxLength={200} name="subject" value={form.subject} onChange={update} placeholder="Backend project enquiry" className="form-input" /><FieldError message={fieldErrors.subject} /></label>
+                <label className="form-label">Project details<textarea required minLength={10} rows="4" name="message" value={form.message} onChange={update} placeholder="Tell me about your project, goals and timeline..." className="form-input resize-y" /><FieldError message={fieldErrors.message} /></label>
+                <button className="button-primary w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending...' : 'Send inquiry'} <ArrowUpRight size={16} /></button>
+                {feedback && <p role="status" className={`text-xs leading-5 ${status === 'success' ? 'text-emerald-700' : 'text-red-600'}`}>{feedback}</p>}
               </div>
             </form>
           </div>
